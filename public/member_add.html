@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>账号添加</title>
+    <!-- 引入重置样式 -->
+    <link rel="stylesheet" href="./stylesheets/reset.css">
+    <!-- 引入elementUI -->
+    <link rel="stylesheet" href="./stylesheets/elementUI.css">
+    <!-- 引入首页样式 -->
+    <link rel="stylesheet" href="./stylesheets/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-main>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>账号添加</span>
+                </div>
+                <!-- 内容 -->
+                <div class="text item" label="top">
+                    <el-form :model="ruleForm2" status-icon :rules="rules2" ref="loginForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item label="用户名账号" prop="username">
+                            <el-input type="text" v-model="ruleForm2.username" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户名密码" prop="checkPass">
+                            <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="确认密码" prop="Pass">
+                            <el-input type="password" v-model="ruleForm2.Pass" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户组" prop="region">
+                            <el-select v-model="ruleForm2.region" placeholder="请选择用户组">
+                                <el-option label="超级管理员" value="超级管理员"></el-option>
+                                <el-option label="管理员" value="管理员"></el-option>
+                                <el-option label="普通用户" value="普通用户"></el-option>
+                            </el-select>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('loginForm')">添加</el-button>
+                            <el-button @click="resetForm('loginForm')">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-card>
+    </div>
+    <!-- 引入jq -->
+    <script src="./javascripts/jquery.js"></script>
+    <!-- 引入vue -->
+    <script src="./javascripts/vue.min.js"></script>
+    <!-- 引入elementUI -->
+    <script src="./javascripts/elementUI.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data() {
+                 //自定义验证方法，判断密码和确认密码是否相等
+                 var validatePass2 = (rule, value, callback) => {
+                    //如果密码和确认密码不相同，就抛出错误
+                    if (value !== this.ruleForm2.checkPass) {
+                        callback(new Error('两次输入密码不一致!'));
+                    } else {
+                        callback();
+                    }
+                 };
+                return {
+                    labelPosition: 'top',
+                    ruleForm2: {
+                        username: "",
+                        checkPass: "",
+                        Pass:"",
+                        region:""
+                    },
+                    rules2: {
+                        username: [
+                            { required: true, message: '请输入用户名账号', trigger: 'blur' },
+                            { min: 6, max: 18, message: "用户名在6-18位之间", trigger: "blur" }
+                        ],
+                        checkPass: [
+                            { required: true, message: '请输入用户名密码', trigger: 'blur' },
+                            { min: 6, max: 18, message: "密码在6-18位之间", trigger: "blur" }
+                        ],
+                        Pass: [
+                            { required: true,validator: validatePass2, trigger: 'blur'  },
+                            { min: 6, max: 18, message: "密码在6-18位之间", trigger: "blur" }
+                        ],
+                        region: [
+                            { required: true, message: '请选择用户组', trigger: 'change' }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                // 提交表单
+                submitForm(formName){
+                    this.$refs[formName].validate((valid)=>{
+                        if(valid){
+                            // 1.表单验证通过就发起AJAX请求到后端路由
+                            // 获取表单数据
+                            console.log(this.ruleForm2);
+                            $.post("/users/add",this.ruleForm2,function(result){
+                                console.log(result);
+                                
+                            });
+
+                        }else{
+                            console.log("error submit!!");
+                            return false;
+                        }
+                    });
+                },
+                // 重置表单
+                resetForm(formName){
+                    this.$refs[formName].resetFields();
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

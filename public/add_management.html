@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>超市管理系统——添加分类</title>
+    <!-- 引入重置样式 -->
+    <link rel="stylesheet" href="./stylesheets/reset.css">
+    <!-- 引入elementUI -->
+    <link rel="stylesheet" href="./stylesheets/elementUI.css">
+    <!-- 引入首页样式 -->
+    <link rel="stylesheet" href="./stylesheets/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-main>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>添加分类</span>
+                </div>
+                <!-- 内容 -->
+                <div class="text item">
+                    <span>所属分类：</span>
+                    <template>
+                        <el-select v-model="value" placeholder="请选择">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select><br><br>
+                        <p>分类名称：</p><br>
+                        <el-input v-model="input" placeholder="请输入内容"></el-input><br><br>
+                        <p>状态：</p><br>
+                        <template>
+                            <el-radio v-model="radio" label="1">启用</el-radio>
+                            <el-radio v-model="radio" label="2">禁用</el-radio>
+                        </template><br><br>
+                        <el-button type="primary" plain>添加</el-button>
+                    </template>
+
+                </div>
+                <!-- 引入jq -->
+                <script src="./javascripts/jquery.js"></script>
+                <!-- 引入vue -->
+                <script src="./javascripts/vue.min.js"></script>
+                <!-- 引入elementUI -->
+                <script src="./javascripts/elementUI.js"></script>
+                <script>
+                    new Vue({
+                        el: "#app",
+                        data() {
+                            return {
+                                options: [{
+                                    value: '选项1',
+                                    label: '顶级分类'
+                                }, {
+                                    value: '选项2',
+                                    label: '高级分类'
+                                }, {
+                                    value: '选项3',
+                                    label: '中级分类'
+                                }, {
+                                    value: '选项4',
+                                    label: '初级分类'
+                                }],
+                                value: '',
+                                input: "",
+                                radio: '1'
+                            }
+                        },
+
+                        methods: {
+
+                        }
+                    })
+                </script>
+</body>
+
+</html>
